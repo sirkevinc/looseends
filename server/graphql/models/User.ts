@@ -56,7 +56,6 @@ builder.queryType({
             },
             resolve: async (query, root, { email, password, name }) => {
                 const createdUser = await prisma.user.create({
-                    ...query,
                     data: {
                         email,
                         password,
