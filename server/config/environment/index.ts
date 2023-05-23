@@ -1,8 +1,8 @@
-const dotenv = require('dotenv')
+import * as dotenv from 'dotenv'
 
 dotenv.config();
 
-const port = process.env.PORT;
+const port = Number(process.env.PORT ?? 3000);
 
 const env = {
     development: process.env.NODE_ENV === 'development',
