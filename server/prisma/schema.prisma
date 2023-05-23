@@ -10,12 +10,12 @@ generator pothos {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "cockroachdb"
   url      = env("DATABASE_URL")
 }
 
 model User {
-  id        Int       @id @default(autoincrement())
+  id        Int       @id @default(sequence())
   email     String    @unique
   password  String    
   name      String?
@@ -23,8 +23,8 @@ model User {
 }
 
 model Profile {
-  id      Int         @id @default(autoincrement())
-  bio     String?
-  user    User        @relation(fields: [userId], references: [id])
-  userId  Int         @unique
+  id        Int         @id @default(sequence())
+  bio       String?
+  user      User        @relation(fields: [userId], references: [id])
+  userId    Int         @unique
 }
