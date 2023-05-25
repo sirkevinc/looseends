@@ -1,69 +1,116 @@
+import { JSONObject } from "graphql-scalars/typings/mocks";
 import { builder } from "../../lib/builder"
 import { prisma } from "../../lib/prisma-client"
 
-builder.prismaObject("User", {
+const User = builder.prismaObject("User", {
     fields: (t) => ({
         id: t.exposeID("id"),
         email: t.exposeString("email"),
         password: t.exposeString("password"),
         name: t.exposeString("name", { nullable: true }),
-        profile: t.relation("profile")
+        profile: t.relation("profile"),
     })
 })
 
-// builder.queryField("users", (t) =>
-//     t.prismaField({
-//         type: ["User"],
-//         resolve: async (query, root, args, ctx, info) => {
-//             return prisma.user.findMany({ ...query });
-//         },
-//     })
-// );
-
-builder.queryType({
-    fields: (t) => ({
-      user: t.prismaField({
-        type: 'User',
-        nullable: true,
-        args: {
-          id: t.arg.id({ required: true }),
+builder.queryField("users", (t) =>
+    t.prismaField({
+        type: [User],
+        resolve: async (query, root, args, ctx, info) => {
+            return prisma.user.findMany({ ...query });
         },
-        resolve: async (query, root, args) =>
-          prisma.user.findUnique({
-            ...query,
-            where: { id: Number.parseInt(String(args.id), 10) },
-          }),
-      }),
-      users: t.prismaField({
-        type: ['User'],
-        nullable: true,
-        resolve: (query, root, args) =>
-          prisma.user.findMany({
-            ...query,
-          }),
-      }),
-    }),
-  });
-
-  builder.mutationType({
-    fields: (t) => ({
-        createUser: t.prismaField({
-            type: 'User',
-            args: {
-                email: t.arg.string(),
-                password: t.arg.string(),
-                name: t.arg.string(),
-            },
-            resolve: async (query, root, { email, password, name }) => {
-                const createdUser = await prisma.user.create({
-                    data: {
-                        email,
-                        password,
-                        name
-                    }
-                })
-                return createdUser;
-            }
-        })
     })
-  })
+);
+
+builder.queryField("user", (t) =>
+    t.prismaField({
+        type: User,
+        args: {
+            userId: t.arg.id({ required: true }),
+        },
+        resolve: async (query, root, args, ctx, info) => {
+            return prisma.user.findUnique({
+                //  ...query,
+                 where: { id: Number.parseInt(String(args.userId), 10)} 
+            });
+        },
+    })
+);
+
+
+builder.mutationField("createUser", (t) =>
+    t.prismaField({
+        type: User,
+        args: {
+            email: t.arg.string(),
+            password: t.arg.string(),
+            name: t.arg.string(),
+        },
+        resolve: async (query, root, { email, password, name }, ctx, info) => {
+            const createdUser = await prisma.user.create({
+                data: {
+                    email,
+                    password,
+                    name
+                }
+            })
+            const createdUserId: number = createdUser?.id;
+            const createdProfile = await prisma.profile.create({
+                data: {
+                    userId: createdUserId,
+                    bio: "Hello"
+                }
+            })
+            console.log(`Profile for UserId: ${createdUserId} created`)
+            
+            return createdUser;
+        }
+    })
+)
+
+builder.mutationField("updateUser", (t) =>
+    t.prismaField({
+        type: User,
+        args: {
+            userId: t.arg.id(),
+            name: t.arg.string(),
+            email: t.arg.string(),
+            password: t.arg.string(),
+        },
+        resolve: async (query, root, { email, password, name, userId }, ctx, info) => {
+            const updatedUser = await prisma.user.update({
+                data: {
+                    email,
+                    password,
+                    name
+                },
+                where: {
+                    userId: Number.parseInt(String(userId), 10)
+                }
+            })
+            return updatedUser;
+        }
+    })
+)
+
+builder.mutationField("deleteUser", (t) =>
+    t.prismaField({
+        type: User,
+        args: {
+            userId: t.arg.id(),
+        },
+        resolve: async (query, root, { userId }, ctx, info) => {
+            const deleteUser = prisma.user.deleteMany({
+                where: {
+                    id: Number.parseInt(String(userId), 10)
+                }
+            })
+            const deleteProfile = prisma.profile.deleteMany({
+                where: {
+                    userId: Number.parseInt(String(userId), 10)
+                }
+            })
+            const transaction = await prisma.$transaction([deleteUser, deleteProfile]);
+            return deleteUser;
+        }
+    })
+)
