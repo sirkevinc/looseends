@@ -1,4 +1,3 @@
-import { JSONObject } from "graphql-scalars/typings/mocks";
 import { builder } from "../../lib/builder"
 import { prisma } from "../../lib/prisma-client"
 
@@ -99,17 +98,12 @@ builder.mutationField("deleteUser", (t) =>
             userId: t.arg.id(),
         },
         resolve: async (query, root, { userId }, ctx, info) => {
-            const deleteUser = prisma.user.deleteMany({
+            const id = Number.parseInt(String(userId), 10);
+            const deleteUser = await prisma.user.delete({
                 where: {
-                    id: Number.parseInt(String(userId), 10)
+                    id
                 }
             })
-            const deleteProfile = prisma.profile.deleteMany({
-                where: {
-                    userId: Number.parseInt(String(userId), 10)
-                }
-            })
-            const transaction = await prisma.$transaction([deleteUser, deleteProfile]);
             return deleteUser;
         }
     })

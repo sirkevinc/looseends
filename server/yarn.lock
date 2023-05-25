@@ -100,7 +100,7 @@
   resolved "https://registry.npmjs.org/@lukeed/ms/-/ms-2.0.1.tgz"
   integrity sha512-Xs/4RZltsAL7pkvaNStUQt7netTkyxrS0K+RILcVr3TRMS/ToOg4I6uNfhB9SlGsnWBym4U+EaXq0f0cEMNkHA==
 
-"@pothos/core@*", "@pothos/core@^3.30.0":
+"@pothos/core@^3.30.0":
   version "3.30.0"
   resolved "https://registry.npmjs.org/@pothos/core/-/core-3.30.0.tgz"
   integrity sha512-ZUL2YTv3ODeKBkhkVcEO03lcERdqQaG2zfylNpkrY9ryAIhOuN9Pbo+VnfqhqEQx7jM/56Rro7i9AuhzF0Q3tA==
@@ -112,7 +112,12 @@
   dependencies:
     "@prisma/generator-helper" "^4.11.0"
 
-"@prisma/client@*", "@prisma/client@^4.14.1":
+"@pothos/plugin-simple-objects@^3.6.8":
+  version "3.6.8"
+  resolved "https://registry.yarnpkg.com/@pothos/plugin-simple-objects/-/plugin-simple-objects-3.6.8.tgz#fe33d741a2955f7242347534a495e745385ad0d7"
+  integrity sha512-qsoBZHfwLAdozJEdT7r7jfineL9vDfdWf7HZkw5zkiUtY6KrZJPNuq0MMCPZGuGxHFBm60jC73nk/ENZrVKpsg==
+
+"@prisma/client@^4.14.1":
   version "4.14.1"
   resolved "https://registry.npmjs.org/@prisma/client/-/client-4.14.1.tgz"
   integrity sha512-TZIswkeX1ccsHG/eN2kICzg/csXll0osK3EHu1QKd8VJ3XLcXozbNELKkCNfsCUvKJAwPdDtFCzF+O+raIVldw==
@@ -341,7 +346,7 @@ cross-spawn@7.0.3:
     shebang-command "^2.0.0"
     which "^2.0.1"
 
-debug@^4.0.0, debug@4.3.4:
+debug@4.3.4, debug@^4.0.0:
   version "4.3.4"
   resolved "https://registry.npmjs.org/debug/-/debug-4.3.4.tgz"
   integrity sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ==
@@ -540,7 +545,7 @@ graphql-scalars@^1.22.0:
   dependencies:
     tslib "^2.5.0"
 
-"graphql@^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0", "graphql@^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0", graphql@^16.0.0, graphql@^16.6.0, graphql@>=15, graphql@>=15.1.0:
+graphql@^16.0.0, graphql@^16.6.0:
   version "16.6.0"
   resolved "https://registry.npmjs.org/graphql/-/graphql-16.6.0.tgz"
   integrity sha512-KPIBPDlW7NxrbT/eh4qPXz5FiFdL5UbaA0XUNz2Rp3Z3hqBSkbj0GVjwFDztsWVauZUWsbKHgMg++sk8UX0bkw==
@@ -757,7 +762,7 @@ pino@^8.5.0:
     sonic-boom "^3.1.0"
     thread-stream "^2.0.0"
 
-prisma@*, prisma@^4.14.1:
+prisma@^4.14.1:
   version "4.14.1"
   resolved "https://registry.npmjs.org/prisma/-/prisma-4.14.1.tgz"
   integrity sha512-z6hxzTMYqT9SIKlzD08dhzsLUpxjFKKsLpp5/kBDnSqiOjtUyyl/dC5tzxLcOa3jkEHQ8+RpB/fE3w8bgNP51g==
@@ -965,7 +970,7 @@ tslib@^2.5.0:
   resolved "https://registry.npmjs.org/tslib/-/tslib-2.5.2.tgz"
   integrity sha512-5svOrSA2w3iGFDs1HibEVBGbDrAY82bFQ3HZ3ixB+88nsbsWQoKqDRb5UBYAUPEzbBn6dAp5gRNXglySbx1MlA==
 
-typescript@^5.0.4, typescript@>=2.7, typescript@>=4.7.2:
+typescript@^5.0.4:
   version "5.0.4"
   resolved "https://registry.npmjs.org/typescript/-/typescript-5.0.4.tgz"
   integrity sha512-cW9T5W9xY37cc+jfEnaUvX91foxtHkza3Nw3wkoF4sSlKn0MONdkdEndig/qPBWXNkmplh3NzayQzCiHM4/hqw==
