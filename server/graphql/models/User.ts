@@ -8,6 +8,7 @@ const User = builder.prismaObject("User", {
         password: t.exposeString("password"),
         name: t.exposeString("name", { nullable: true }),
         profile: t.relation("profile"),
+        notes: t.relation("notes")
     })
 })
 
