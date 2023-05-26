@@ -1,6 +1,8 @@
 import { builder } from "../../lib/builder"
 import { prisma } from "../../lib/prisma-client"
 
+import * as jwt from 'jsonwebtoken';
+
 const User = builder.prismaObject("User", {
     fields: (t) => ({
         id: t.exposeID("id"),
@@ -12,10 +14,27 @@ const User = builder.prismaObject("User", {
     })
 })
 
+export class Token {
+    token: string
+
+    constructor(token: string) {
+        this.token = token;
+
+    }
+}
+
+const AuthToken = builder.objectType(Token, {
+    name: 'AuthToken',
+    fields: (t) => ({
+        token: t.exposeString("token")
+    }),
+});
+
 builder.queryField("users", (t) =>
     t.prismaField({
         type: [User],
         resolve: async (query, root, args, ctx, info) => {
+            console.log(ctx)
             return prisma.user.findMany({ ...query });
         },
     })
@@ -35,6 +54,48 @@ builder.queryField("user", (t) =>
         },
     })
 );
+
+
+builder.queryField('login', (t) =>
+  t.field({
+    type: AuthToken,
+    args: {
+        email: t.arg.string({ required: true }),
+        password: t.arg.string({ required: true }),
+    },
+    resolve: async (root, { email, password }, ctx) => {
+        const test = await prisma.user.findFirst({
+            where: {AND: [{ email },{ password }]}
+        });
+        const token = jwt.sign({ email: test.email, password: test.password }, 'mysecret');
+        return new Token(token);
+    }
+  })
+)
+
+
+// builder.queryField("login", (t) =>
+//     t.prismaField({
+//         type: User,
+//         args: {
+//             email: t.arg.string({ required: true }),
+//             password: t.arg.string({ required: true }),
+//         },
+//         resolve: async (query, root, { email, password }, ctx, info) => {
+//             const userLoggingIn = prisma.user.findUnique({
+//                  where: {
+//                     email,
+//                     password
+//                  }
+//             });
+//             if (!userLoggingIn) {
+//                 throw new Error ("unkonwn user!");
+//             }
+//             const token = jwt.sign({ email: userLoggingIn.email, password: userLoggingIn.password }, 'mysecret');
+//             return token;
+//         },
+//     })
+// );
 
 
 builder.mutationField("createUser", (t) =>

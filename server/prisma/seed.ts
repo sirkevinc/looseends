@@ -13,6 +13,12 @@ async function main() {
         create: {
             bio: "Test"
         }
+      },
+      notes: {
+        create: {
+          title: "My first note",
+          content: "Wow this is great!"
+        }
       }
     },
   })
@@ -26,6 +32,12 @@ async function main() {
       profile: {
         create: {
             bio: "Test"
+        }
+      },
+      notes: {
+        create: {
+          title: "My first note",
+          content: "Wow this is great!"
         }
       }
     },
