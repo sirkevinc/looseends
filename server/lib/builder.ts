@@ -7,12 +7,19 @@ import type PrismaTypes from '@pothos/plugin-prisma/generated';
 import { prisma } from './prisma-client';
 // import { createContext } from '../graphql/context';
 
+
+type Context = {
+    [key: string]: any;
+    token: string;
+}
+
 export const builder = new SchemaBuilder<{
     Scalars: {
         Date: { Input: Date; Output: Date };
     };
     PrismaTypes: PrismaTypes,
-    // Context: ReturnType<typeof createContext>
+    Context: Context
+
 }>({
     plugins: [PrismaPlugin],
     prisma: {

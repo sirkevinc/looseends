@@ -11,10 +11,21 @@ const Note = builder.prismaObject("Note", {
     })
 })
 
-builder.queryField("notes", (t) =>
+builder.queryField("allNotes", (t) =>
     t.prismaField({
         type: [Note],
         resolve: async (query, root, args, ctx, info) => {
+            return prisma.note.findMany({ ...query });
+        },
+    })
+);
+
+builder.queryField("getAllUsersNotes", (t) =>
+    t.prismaField({
+        type: [Note],
+        resolve: async (query, root, args, ctx, info) => {
+            const token = ctx.token;
+
             return prisma.note.findMany({ ...query });
         },
     })

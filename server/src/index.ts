@@ -8,10 +8,17 @@ import { schema } from "../graphql/schema"
 
 import { port } from "../config/environment"
 
+import * as jwt from 'jsonwebtoken'
+
 const app = Fastify({ logger: true });
 
 app.register(mercurius, {
     schema,
+    context: (request, reply) => {
+        return {
+            token: request.headers.authorization
+        }
+    },
     graphiql: true
 })
 
